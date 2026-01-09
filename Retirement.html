@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Retirement Readiness (Educational)</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; line-height: 1.35; }
+    .wrap { max-width: 860px; margin: 0 auto; }
+    h1 { font-size: 22px; margin: 0 0 8px; }
+    .note { font-size: 12.5px; color: #444; margin-bottom: 18px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .card { border: 1px solid #ddd; border-radius: 10px; padding: 14px; }
+    label { display: block; font-weight: 600; margin: 0 0 6px; }
+    input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; }
+    .row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+    .helper { font-size: 12px; color: #555; margin-top: 6px; }
+    .btns { display: flex; gap: 10px; margin-top: 14px; }
+    button { padding: 10px 14px; border-radius: 10px; border: 1px solid #bbb; background: #fff; cursor: pointer; font-weight: 700; }
+    button.primary { border-color: #111; }
+    .result { margin-top: 14px; padding: 14px; border-radius: 10px; border: 1px solid #ddd; }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-weight: 800; font-size: 12px; }
+    .muted { color: #444; font-size: 13px; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .small { font-size: 12px; color: #555; }
+    @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Retirement Readiness Check (Educational)</h1>
+    <div class="note">
+      This is a simplified, educational estimate. Projections are illustrative and not guaranteed. It is not personalised financial advice.
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3 style="margin:0 0 10px;">1) Basics</h3>
+
+        <label for="currentAge">Current age</label>
+        <input id="currentAge" type="number" inputmode="numeric" min="18" max="90" placeholder="e.g. 45" />
+
+        <div style="height:10px;"></div>
+
+        <label for="retireAge">Target retirement age</label>
+        <input id="retireAge" type="number" inputmode="numeric" min="30" max="90" placeholder="e.g. 65" />
+
+        <div style="height:10px;"></div>
+
+        <label for="longevityAge">Plan income to age</label>
+        <select id="longevityAge">
+          <option value="85">85</option>
+          <option value="90">90</option>
+          <option value="95" selected>95 (default)</option>
+          <option value="100">100</option>
+        </select>
+
+        <div class="helper">If you’re not sure, leave the default (95).</div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin:0 0 10px;">2) Target lifestyle</h3>
+
+        <label for="monthlyIncome">Desired retirement income (per month, today’s dollars)</label>
+        <input id="monthlyIncome" type="number" inputmode="numeric" min="0" step="100" placeholder="e.g. 4000" />
+        <div class="helper">Keep it approximate. You can refine this later.</div>
+
+        <div style="height:10px;"></div>
+
+        <label for="monthlySavings">Monthly savings / investing (excluding CPF)</label>
+        <input id="monthlySavings" type="number" inputmode="numeric" min="0" step="50" placeholder="e.g. 1000" />
+        <div class="helper">If irregular, enter an average.</div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin:0 0 10px;">3) Current assets (optional, estimates are fine)</h3>
+
+        <label for="cpf">CPF balance (total)</label>
+        <div class="row">
+          <input id="cpf" type="number" inputmode="numeric" min="0" step="1000" placeholder="e.g. 250000" />
+          <label style="font-weight:600; display:flex; gap:6px; align-items:center; margin:0;">
+            <input id="cpfUnknown" type="checkbox" />
+            Not sure
+          </label>
+        </div>
+
+        <div style="height:10px;"></div>
+
+        <label for="cash">Cash / savings (excluding CPF)</label>
+        <div class="row">
+          <input id="cash" type="number" inputmode="numeric" min="0" step="1000" placeholder="e.g. 80000" />
+          <label style="font-weight:600; display:flex; gap:6px; align-items:center; margin:0;">
+            <input id="cashUnknown" type="checkbox" />
+            Not sure
+          </label>
+        </div>
+
+        <div style="height:10px;"></div>
+
+        <label for="invest">Investments (excluding CPF)</label>
+        <div class="row">
+          <input id="invest" type="number" inputmode="numeric" min="0" step="1000" placeholder="e.g. 150000" />
+          <label style="font-weight:600; display:flex; gap:6px; align-items:center; margin:0;">
+            <input id="investUnknown" type="checkbox" />
+            Not sure
+          </label>
+        </div>
+
+        <div class="helper">
+          “Not sure” will be treated conservatively (as 0) so the result won’t be overstated.
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin:0 0 10px;">4) Confidence (optional)</h3>
+
+        <label for="confidence">How confident do you feel?</label>
+        <select id="confidence">
+          <option value="">— Select (optional) —</option>
+          <option value="confident">Confident</option>
+          <option value="unsure">Somewhat unsure</option>
+          <option value="worried">Worried</option>
+        </select>
+
+        <div style="height:10px;"></div>
+
+        <label for="concern">Biggest concern (optional)</label>
+        <select id="concern">
+          <option value="">— Select (optional) —</option>
+          <option value="saving">Not saving enough</option>
+          <option value="inflation">Inflation / rising costs</option>
+          <option value="cpf">CPF / CPF LIFE confusion</option>
+          <option value="volatility">Investment volatility</option>
+          <option value="healthcare">Healthcare costs</option>
+          <option value="start">Not sure where to start</option>
+        </select>
+
+        <div class="small" style="margin-top:10px;">
+          These fields don’t change the maths; they help personalise your follow-up.
+        </div>
+      </div>
+    </div>
+
+    <div class="btns">
+      <button class="primary" id="calcBtn">Calculate</button>
+      <button id="resetBtn" type="button">Reset</button>
+    </div>
+
+    <div id="output" class="result" style="display:none;"></div>
+
+    <div class="note" style="margin-top:18px;">
+      <b>Method (simplified):</b> Required Capital = (Monthly Income × 12) × Retirement Years. Total Capital =
+      Current Assets + (Monthly Savings × 12 × Years to Retirement). Status is based on Readiness Ratio (Total ÷ Required).
+    </div>
+  </div>
+
+  <script>
+    // --- Helpers ---
+    const $ = (id) => document.getElementById(id);
+
+    function toNumber(value) {
+      const n = Number(String(value).replace(/,/g, ""));
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function clampMin(n, min) { return n < min ? min : n; }
+
+    function fmtMoney(n) {
+      // Simple formatting; adjust locale/currency if you want
+      return n.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    }
+
+    function disableIfUnknown(inputId, unknownId) {
+      const input = $(inputId);
+      const chk = $(unknownId);
+      const sync = () => {
+        input.disabled = chk.checked;
+        if (chk.checked) input.value = "";
+      };
+      chk.addEventListener("change", sync);
+      sync();
+    }
+
+    disableIfUnknown("cpf", "cpfUnknown");
+    disableIfUnknown("cash", "cashUnknown");
+    disableIfUnknown("invest", "investUnknown");
+
+    // --- Core calculation (matches the maths you approved) ---
+    function calculate() {
+      const currentAge = toNumber($("currentAge").value);
+      const retireAge  = toNumber($("retireAge").value);
+      const longevityAge = toNumber($("longevityAge").value);
+
+      const monthlyIncome = toNumber($("monthlyIncome").value);
+      const monthlySavings = toNumber($("monthlySavings").value);
+
+      // Validate minimal required inputs
+      const errors = [];
+      if (currentAge <= 0) errors.push("Please enter your current age.");
+      if (retireAge <= 0) errors.push("Please enter your target retirement age.");
+      if (retireAge <= currentAge) errors.push("Retirement age must be greater than current age.");
+      if (monthlyIncome <= 0) errors.push("Please enter your desired retirement income per month.");
+      if (monthlySavings < 0) errors.push("Monthly savings cannot be negative.");
+
+      const output = $("output");
+      output.style.display = "block";
+
+      if (errors.length) {
+        output.innerHTML = `
+          <div class="badge" style="background:#fff3cd;border:1px solid #ffe69c;">Needs input</div>
+          <div style="margin-top:10px;">
+            <ul>${errors.map(e => `<li>${e}</li>`).join("")}</ul>
+          </div>
+        `;
+        return;
+      }
+
+      // Years to retirement
+      const YTR = retireAge - currentAge;
+
+      // Retirement years (default conservative if weird)
+      let RY = longevityAge - retireAge;
+      RY = clampMin(RY, 1);
+
+      // Required capital (no returns assumed; conservative & explainable)
+      const AIN = monthlyIncome * 12;        // annual income needed
+      const RC  = AIN * RY;                  // required capital
+
+      // Current assets (optional, conservative if unknown)
+      const cpf   = $("cpfUnknown").checked ? 0 : toNumber($("cpf").value);
+      const cash  = $("cashUnknown").checked ? 0 : toNumber($("cash").value);
+      const invest= $("investUnknown").checked ? 0 : toNumber($("invest").value);
+
+      const CC = cpf + cash + invest;
+
+      // Future savings projection (no compounding assumed)
+      const FS = monthlySavings * 12 * YTR;
+
+      // Total capital at retirement
+      const TC = CC + FS;
+
+      // Readiness ratio
+      const RR = RC > 0 ? (TC / RC) : 0;
+
+      // Optional safety adjustment: if many unknowns, downgrade one level
+      const unknownCount = Number($("cpfUnknown").checked) + Number($("cashUnknown").checked) + Number($("investUnknown").checked);
+
+      // Determine status by thresholds
+      let status = "";
+      if (RR >= 1.0) status = "on_track";
+      else if (RR >= 0.70) status = "at_risk";
+      else status = "not_on_track";
+
+      // Downgrade if too uncertain (you can tune this)
+      if (unknownCount >= 2) {
+        if (status === "on_track") status = "at_risk";
+        else if (status === "at_risk") status = "not_on_track";
+      }
+
+      // Additional safeguard: if monthlySavings is 0, cap at At Risk unless very strong
+      if (monthlySavings === 0 && RR < 1.2 && status === "on_track") {
+        status = "at_risk";
+      }
+
+      let badgeText = "";
+      let badgeStyle = "";
+      let message = "";
+
+      if (status === "on_track") {
+        badgeText = "✅ On Track";
+        badgeStyle = "background:#e7f7ee;border:1px solid #b7ebc6;";
+        message = `
+          Based on your inputs, you appear broadly on track if things continue as they are.
+          There may still be opportunities to optimise and stress-test your plan.
+        `;
+      } else if (status === "at_risk") {
+        badgeText = "⚠️ At Risk";
+        badgeStyle = "background:#fff4e5;border:1px solid #ffd5a5;";
+        message = `
+          If nothing changes, there may be a gap between your desired lifestyle and your current trajectory.
+          This is common and often fixable with adjustments.
+        `;
+      } else {
+        badgeText = "❌ Not On Track";
+        badgeStyle = "background:#ffecec;border:1px solid #ffb3b3;";
+        message = `
+          Your inputs suggest a significant gap if nothing changes.
+          While this may feel uncomfortable, early awareness gives you more options.
+        `;
+      }
+
+      // Optional: You can redirect based on status (replace URLs)
+      // const landingUrls = {
+      //   on_track: "/on-track",
+      //   at_risk: "/at-risk",
+      //   not_on_track: "/not-on-track"
+      // };
+      // window.location.href = landingUrls[status];
+
+      output.innerHTML = `
+        <div class="badge" style="${badgeStyle}">${badgeText}</div>
+        <div style="margin-top:10px;" class="muted">${message}</div>
+
+        <hr style="border:none;border-top:1px solid #eee;margin:14px 0;" />
+
+        <div class="muted">
+          <div><b>Years to retirement:</b> ${YTR}</div>
+          <div><b>Retirement years planned:</b> ${RY}</div>
+          <div><b>Required capital (illustrative):</b> $${fmtMoney(RC)}</div>
+          <div><b>Estimated capital at retirement:</b> $${fmtMoney(TC)}</div>
+          <div><b>Readiness ratio (TC ÷ RC):</b> <span class="mono">${RR.toFixed(2)}</span></div>
+          ${unknownCount ? `<div class="small" style="margin-top:8px;">Note: Some fields were marked “Not sure”, so the result is intentionally conservative.</div>` : ""}
+        </div>
+      `;
+
+      // If you want to push values to HubSpot later, you can do it here (via API or form submission)
+      // console.log({ currentAge, retireAge, longevityAge, monthlyIncome, monthlySavings, cpf, cash, invest, YTR, RY, RC, CC, FS, TC, RR, status });
+    }
+
+    $("calcBtn").addEventListener("click", calculate);
+
+    $("resetBtn").addEventListener("click", () => {
+      ["currentAge","retireAge","monthlyIncome","monthlySavings","cpf","cash","invest"].forEach(id => $(id).value = "");
+      ["cpfUnknown","cashUnknown","investUnknown"].forEach(id => $(id).checked = false);
+      $("longevityAge").value = "95";
+      $("confidence").value = "";
+      $("concern").value = "";
+      $("output").style.display = "none";
+      // re-sync disabled state
+      ["cpf","cash","invest"].forEach((inputId, i) => {
+        const chkId = ["cpfUnknown","cashUnknown","investUnknown"][i];
+        $(inputId).disabled = $(chkId).checked;
+      });
+    });
+  </script>
+</body>
+</html>
